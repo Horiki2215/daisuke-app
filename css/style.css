@@ -170,75 +170,63 @@ body {
 .category-grid .cat-card:last-child {
     grid-column: span 2;
     /* "Other" spans full width */
+    aspect-ratio: auto;
+    /* Not square */
+    height: 100px;
+    /* Rectangular height */
+    flex-direction: row;
+    /* Horizontal layout for the long button */
 }
 
 .cat-card {
     background: var(--bg-card);
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: var(--radius-lg);
-    /* Back to large radius */
     padding: var(--spacing-md);
     display: flex;
     flex-direction: column;
-    /* Back to column */
     align-items: center;
     justify-content: center;
-    gap: var(--spacing-sm);
+    gap: 0;
+    /* No gap needed without icon */
     cursor: pointer;
     position: relative;
-    height: 120px;
-    /* Back to taller height */
-    transition: all 0.2s;
+    height: auto;
+    /* Let aspect ratio handle height */
+    aspect-ratio: 1;
+    /* Make it square */
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+    /* Bouncy transition */
     box-shadow: var(--shadow-soft);
-    /* Restore soft shadow */
+}
+
+.cat-card:hover {
+    transform: scale(1.05);
+    /* Increase size on hover */
+    z-index: 1;
+    /* Bring to front */
 }
 
 .cat-card:active {
-    background: rgba(0, 0, 0, 0.02);
-    transform: scale(0.98);
+    transform: scale(0.95);
 }
 
-.icon-box {
-    width: 48px;
-    height: 48px;
-    border-radius: var(--radius-md);
-    /* Back to rounded squareish */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    margin-bottom: 4px;
-    background: rgba(0, 0, 0, 0.03);
-    color: var(--text-primary);
-}
-
-/* Remove colored backgrounds for icons, keep them minimal */
-.icon-box.assignment,
-.icon-box.attendance,
-.icon-box.parttime,
-.icon-box.event,
-.icon-box.other {
-    background: rgba(0, 0, 0, 0.03);
-    color: var(--text-primary);
-}
+/* Icon box removed */
 
 .cat-card span {
-    font-weight: 500;
-    font-size: 1rem;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    /* Rounder font */
+    font-weight: 700;
+    /* Bold */
+    font-size: 1.2rem;
+    /* Larger text */
     color: var(--text-primary);
+    text-align: center;
 }
 
 .count-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    transform: none;
-    background: rgba(0, 0, 0, 0.05);
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--text-secondary);
+    display: none;
+    /* User requested to remove the "black shadow" on top right */
 }
 
 /* Upcoming List */

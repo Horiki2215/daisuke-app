@@ -7,7 +7,8 @@ const state = {
     events: [],
     currentDate: new Date(),
     selectedDate: null,
-    view: 'home'
+    view: 'home',
+    currentCategory: null // Track active category
 };
 
 // DOM Elements
@@ -209,6 +210,16 @@ function renderAll() {
     renderCounts();
     renderUpcoming();
     renderCalendar();
+    
+    // Refresh active list view if open
+    const listTitle = document.getElementById('list-title').textContent;
+    if (document.getElementById('view-list').classList.contains('active')) {
+        // Reverse lookup category from title or just re-run filter based on current knowledge
+        // Easier way: store currentCategory in state
+        if (state.currentCategory) {
+            showCategoryList(state.currentCategory);
+        }
+    }
 }
 
 function renderCounts() {
@@ -356,6 +367,7 @@ function openDayDetails(dateStr) {
 }
 
 function showCategoryList(category) {
+    state.currentCategory = category; // Store current category
     switchView('view-list');
     const list = elements.lists.category;
     list.innerHTML = '';
