@@ -197,6 +197,9 @@ function deleteEvent(id) {
 }
 
 function toggleComplete(id) {
+    // Haptic feedback
+    if (navigator.vibrate) navigator.vibrate(50);
+
     const event = state.events.find(e => e.id === id);
     if (event) {
         event.completed = !event.completed;
