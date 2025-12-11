@@ -280,7 +280,9 @@ function createEventCard(e) {
 
     div.innerHTML = `
         <div class="task-info" onclick="showEventDetails('${e.id}')">
-            <div class="task-title">${e.title}</div>
+            <div class="task-title">
+                ${e.title}
+            </div>
             <div class="task-meta">
                 <span><i class="fa-regular fa-calendar"></i> ${formatDate(e.date)}</span>
                 ${e.memo ? '<span><i class="fa-solid fa-note-sticky"></i></span>' : ''}
