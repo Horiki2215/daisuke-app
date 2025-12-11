@@ -22,10 +22,12 @@ const elements = {
     closeSidebarBtn: document.getElementById('close-sidebar'),
     modals: {
         addEvent: document.getElementById('modal-add-event'),
+        editEvent: document.getElementById('modal-edit-event'),
         dayDetails: document.getElementById('modal-day-details')
     },
     forms: {
-        addEvent: document.getElementById('add-event-form')
+        addEvent: document.getElementById('add-event-form'),
+        editEvent: document.getElementById('edit-event-form')
     },
     calendar: {
         grid: document.getElementById('calendar-grid'),
@@ -133,6 +135,23 @@ function setupEventListeners() {
         
         // Reset date to today or selected
         document.getElementById('event-date').valueAsDate = new Date();
+    });
+
+
+    // Edit Event Form
+    elements.forms.editEvent.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const id = document.getElementById('edit-event-id').value;
+        const updatedEvent = {
+            title: document.getElementById('edit-event-title').value,
+            category: document.querySelector('input[name="edit-category"]:checked').value,
+            date: document.getElementById('edit-event-date').value,
+            memo: document.getElementById('edit-event-memo').value,
+            isImportant: document.getElementById('edit-event-important').checked
+        };
+        
+        updateEvent(id, updatedEvent);
+        closeAllModals();
     });
 
     // Calendar Navigation
@@ -448,6 +467,43 @@ function showCategoryList(category) {
         wrapper.appendChild(createEventCard(e));
         list.appendChild(wrapper);
     });
+}
+
+function updateEvent(id, updates) {
+    const index = state.events.findIndex(e => e.id === id);
+    if (index !== -1) {
+        state.events[index] = { ...state.events[index], ...updates };
+        saveData();
+        renderAll();
+        
+        // Refresh day view if open
+        if (state.selectedDate) {
+            openDayDetails(state.selectedDate);
+        }
+    }
+}
+
+function showEventDetails(id) {
+    const event = state.events.find(e => e.id === id);
+    if (!event) return;
+    
+    // Populate form
+    document.getElementById('edit-event-id').value = event.id;
+    document.getElementById('edit-event-title').value = event.title;
+    document.getElementById('edit-event-date').value = event.date;
+    document.getElementById('edit-event-memo').value = event.memo || '';
+    document.getElementById('edit-event-important').checked = event.isImportant || false;
+    
+    // Radio buttons
+    const radios = document.getElementsByName('edit-category');
+    for(const radio of radios) {
+        if(radio.value === event.category) {
+            radio.checked = true;
+            break;
+        }
+    }
+    
+    openModal('editEvent');
 }
 
 // Helpers
